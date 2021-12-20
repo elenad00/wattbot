@@ -9,6 +9,7 @@ wattbot currently collects:
 - reads
 - votes
 - parts
+
 wattbot calculates:
 - average votes per part
 - reads per like
