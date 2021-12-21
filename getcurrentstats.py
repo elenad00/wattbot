@@ -6,6 +6,7 @@ from sys import argv
 from bs4 import BeautifulSoup
 from datetime import date
 from pymongo import MongoClient
+from summaries import *
 
 try:
   password = argv[1]
@@ -72,6 +73,7 @@ def appenddb(bookid, stats, password):
   print(res)
      
 def run():
+<<<<<<< HEAD
   # get books in Books from Mongo
   col = db["Books"]
   books = col.find()
@@ -82,3 +84,24 @@ def run():
     appenddb(book['_id'], stats, password)
     
 run()
+=======
+    # check if has run today
+    col = db["instances"]
+    today = date.today().strftime("%d%m%Y")
+    books = col.find({'date':today})
+    t = False
+    for book in books:
+        if book['date'] == today:
+            print('[!] Query has already been run today')
+            exit(1)
+    # get books in Books from Mongo
+    col = db["Books"]
+    books = col.find()
+    for book in books:
+        print(f"[*] Getting results for {book['title']}")
+        stats = scrape(book['url'])
+        appenddb(book['id'], stats, password)
+        getyesterday(book['id'])
+
+run()
+>>>>>>> ccdf66e... added functionality to call and compare yesterday's results
