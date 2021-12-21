@@ -20,3 +20,12 @@ wattbot was created so that reading stats can be collected and analysed in ways 
 
 ## where the data is stored
 all data collected from wattbot is stored in a mongodb database
+
+## dataflow
+1. wattbot checks your profile to see if you have any new books, or have deleted any
+2. if you have new books, wattbot will add them to the database
+3. then, wattbot will scrape today's data from all of the books you have published
+4. this data is then returned to you and saved to the database
+5. wattbot will then compare today's data to yesterdays and give you the rundown
+6. every week, wattbot will give you your weekly stats
+7. every month, wattbot will give you your monthly stats
