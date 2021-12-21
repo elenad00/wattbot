@@ -46,6 +46,7 @@ def appenddb(bookid, stats, db):
   print(res)
 
 def gettoday(password):
+    run = False
     client = MongoClient(f"mongodb+srv://admin:{password}@wattbot.mcfnd.mongodb.net/Stats?retryWrites=true&w=majority")
     db = client["Wattbot"]
     col = db["instances"]
@@ -53,12 +54,13 @@ def gettoday(password):
     books = col.find({'date':today})
     for book in books:
         if book['date'] == today:
-            print('[!] Query has already been run today')
-            exit(1)
+            run = True
     col = db["Books"]
     books = col.find()
+    if run:
+        return db, books
     for book in books:
         print(f"[*] Getting results for {book['title']}")
         stats = scrape(book['url'])
         appenddb(book['id'], stats, db)
-        getyesterday(book['id'])
+    return db, books
