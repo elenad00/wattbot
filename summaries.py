@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 try:
   password = argv[1]
 except Exception:
@@ -8,13 +9,20 @@ db = client["Wattbot"]
 print("[-] Connected to MongoDB")
 
 def getyesterday(bookid):
+=======
+from pymongo import MongoClient
+from datetime import date, timedelta
+from sys import argv
+
+def getyesterday(bookid, db):
+>>>>>>> 1ea88e4 (refined adding new works)
     print("[*] Retrieving todays data")
     today = date.today().strftime("%d%m%Y")
-    tres = getvals(today, bookid)
+    tres = getvals(today, bookid, db)
 
     print("[*] Retrieving yesterdays data")
     yest = (date.today() - timedelta(days=1)).strftime("%d%m%Y")
-    yres = getvals(yest, bookid)
+    yres = getvals(yest, bookid, db)
 
     compare(tres, yres)
 

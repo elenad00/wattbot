@@ -2,38 +2,9 @@ import requests
 from requests.structures import CaseInsensitiveDict
 import urllib.request
 import time
+from pymongo import MongoClient
 from sys import argv
 from bs4 import BeautifulSoup
-from datetime import date
-from pymongo import MongoClient
-from summaries import *
-
-try:
-  password = argv[1]
-except Exception:
-  print("[!] No Password Supplied")
-  exit(1)
-client = MongoClient(f"mongodb+srv://admin:{password}@wattbot.mcfnd.mongodb.net/Stats?retryWrites=true&w=majority")
-db = client["Wattbot"]
-
-def scrape(url):
-  resp = connect(url)
-  soup = BeautifulSoup(resp.text, 'html.parser')
-  print("[*] Scrape Complete")
-  mydivs = list(soup.find_all("span", {"class": "sr-only"}))
-  reads = getstrip(mydivs[2])
-  likes = getstrip(mydivs[4])
-  chapters = getstrip(mydivs[6])
-  print(f'[+] Current values:\n\tReads: {reads}\n\tLikes: {likes}\n\tChapters: {chapters}')
-  lpc = round(likes/chapters, 1)
-  print(f'\tAverage Likes Per Chapter: {lpc}')
-  rat = round(reads/likes)
-  print(f"\tReads per Like: {rat}")
-  interaction = round(likes/reads/chapters*10000, 1)
-  print(f"\tInteraction Score: {interaction}\n")
-  today = date.today()
-  today = today.strftime("%d%m%Y")
-  return (today, reads, likes, chapters, lpc, rat, interaction)
 
 def connect(url):
   headers = CaseInsensitiveDict()
@@ -55,6 +26,7 @@ def connect(url):
     exit(1)
   return resp
 
+<<<<<<< HEAD:getcurrentstats.py
 def getstrip(spanval):
     strippedval = int(str(spanval).replace('<span class="sr-only">', '').replace(',','').replace('</span>',''))
     return strippedval
@@ -105,3 +77,9 @@ run()
 
 run()
 >>>>>>> ccdf66e... added functionality to call and compare yesterday's results
+=======
+def databaseconnect(password):
+    client = MongoClient(f"mongodb+srv://admin:{password}@wattbot.mcfnd.mongodb.net/Stats?retryWrites=true&w=majority")
+    db = client.Wattbot
+    return db
+>>>>>>> 1ea88e4 (refined adding new works):utils.py
