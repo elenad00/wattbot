@@ -5,6 +5,7 @@ from datetime import date
 import re
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 def run():
   title = args[1]
   url = args[2]
@@ -25,6 +26,9 @@ run()
 =======
 def addbook(username, password):
     db = databaseconnect(password)
+=======
+def addbook(username, db):
+>>>>>>> 27e973b (tying up loose ends)
     userprofile = f'https://www.wattpad.com/user/{username}'
     urls = scrapeprofile(userprofile)
     for url in urls:
@@ -33,11 +37,12 @@ def addbook(username, password):
             print("[*] Adding new book")
             info = scrapebook(url, db)
             savebook(info, db)
+    print("[-] Books Analysed")
 
 def scrapeprofile(url):
     resp = connect(url)
     soup = BeautifulSoup(resp.text, 'html.parser')
-    print("[*] Scrape Complete")
+    print("[-] Profile Scrape Complete")
     mydivs = list(soup.find_all('a', {"class":"send-cover-event on-story-preview cover cover-home"}))
     urls = []
     for div in mydivs:
