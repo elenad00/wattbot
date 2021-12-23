@@ -4,31 +4,8 @@ from utils import *
 from datetime import date
 import re
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-def run():
-  title = args[1]
-  url = args[2]
-  date = args[3]
-  password = args[4]
-  calldb(title, url, date, password)
-  
-def calldb(title, url, date, password):
-  client = MongoClient(f"mongodb+srv://admin:{password}@wattbot.mcfnd.mongodb.net/Stats?retryWrites=true&w=majority")
-  db = client.Wattbot
-  book = {'title':title,
-          'url':url,
-          'dateadded':date}
-  res = db.Books.insert_one(book)
-  print(res)
-  
-run()
-=======
 def addbook(username, password):
     db = databaseconnect(password)
-=======
-def addbook(username, db):
->>>>>>> 27e973b (tying up loose ends)
     userprofile = f'https://www.wattpad.com/user/{username}'
     urls = scrapeprofile(userprofile)
     for url in urls:
@@ -37,12 +14,11 @@ def addbook(username, db):
             print("[*] Adding new book")
             info = scrapebook(url, db)
             savebook(info, db)
-    print("[-] Books Analysed")
 
 def scrapeprofile(url):
     resp = connect(url)
     soup = BeautifulSoup(resp.text, 'html.parser')
-    print("[-] Profile Scrape Complete")
+    print("[*] Scrape Complete")
     mydivs = list(soup.find_all('a', {"class":"send-cover-event on-story-preview cover cover-home"}))
     urls = []
     for div in mydivs:
@@ -80,4 +56,3 @@ def savebook(info, db):
         'id':info[3]}
     res = db.Books.insert_one(book)
     print(res)
->>>>>>> 1ea88e4 (refined adding new works)

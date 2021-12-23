@@ -26,37 +26,6 @@ def connect(url):
     exit(1)
   return resp
 
-<<<<<<< HEAD:getcurrentstats.py
-def getstrip(spanval):
-    strippedval = int(str(spanval).replace('<span class="sr-only">', '').replace(',','').replace('</span>',''))
-    return strippedval
- 
-def appenddb(bookid, stats, password):
-  instance = {'bookid':bookid,
-    'date':stats[0],
-    'reads':stats[1],
-    'likes': stats[2],
-    'chapters': stats[3],
-    'avglpc': stats[4],
-    'readsperlike': stats[5],
-    'interaction': stats[6]
-  }
-  res = db.instances.insert_one(instance)
-  print(res)
-     
-def run():
-<<<<<<< HEAD
-  # get books in Books from Mongo
-  col = db["Books"]
-  books = col.find()
-  # cycle through
-  for book in books:
-    print(f"[*] Getting results for {book['title']}")
-    stats = scrape(book['url'])
-    appenddb(book['_id'], stats, password)
-    
-run()
-=======
     # check if has run today
     col = db["instances"]
     today = date.today().strftime("%d%m%Y")
@@ -76,10 +45,7 @@ run()
         getyesterday(book['id'])
 
 run()
->>>>>>> ccdf66e... added functionality to call and compare yesterday's results
-=======
 def databaseconnect(password):
     client = MongoClient(f"mongodb+srv://admin:{password}@wattbot.mcfnd.mongodb.net/Stats?retryWrites=true&w=majority")
     db = client.Wattbot
     return db
->>>>>>> 1ea88e4 (refined adding new works):utils.py
