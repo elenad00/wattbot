@@ -28,6 +28,3 @@ all data collected from wattbot is stored in a mongodb database
 5. wattbot will then compare today's data to yesterdays and give you the rundown
 6. every week, wattbot will give you your weekly stats
 7. every month, wattbot will give you your monthly stats
-<<<<<<< HEAD
-=======
->>>>>>> d73b457 (Update README.md)
