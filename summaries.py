@@ -1,33 +1,12 @@
-<<<<<<< HEAD
-try:
-  password = argv[1]
-except Exception:
-  print("[!] No Password Supplied")
-  exit(1)
-client = MongoClient(f"mongodb+srv://admin:{password}@wattbot.mcfnd.mongodb.net/Stats?retryWrites=true&w=majority")
-db = client["Wattbot"]
-print("[-] Connected to MongoDB")
 
-def getyesterday(bookid):
-=======
 from pymongo import MongoClient
 from datetime import date, timedelta
 from sys import argv
 from plotter import plot
 
-<<<<<<< HEAD
-def getyesterday(bookid, db):
->>>>>>> 1ea88e4 (refined adding new works)
-=======
 def getyesterday(books, db):
-<<<<<<< HEAD
->>>>>>> 368042a (added weekly and monthly summaries)
-    print("[*] Retrieving todays data")
-    getdata(2, books, db, 1)
-=======
     print("[*] Comparing todays data")
     data = getdata(2, books, db)
->>>>>>> bcae140 (adding error checking)
 
 def getthisweek(books, db):
     print("[*] Retrieving this weeks data")

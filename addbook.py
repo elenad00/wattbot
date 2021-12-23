@@ -4,8 +4,7 @@ from utils import *
 from datetime import date
 import re
 
-def addbook(username, password):
-    db = databaseconnect(password)
+def addbook(username, db):
     userprofile = f'https://www.wattpad.com/user/{username}'
     urls = scrapeprofile(userprofile)
     for url in urls:
