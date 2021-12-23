@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 pwd.txt
 
 
+=======
+>>>>>>> ad2cf4b (edited gitignore)
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -130,5 +133,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> ad2cf4b (edited gitignore)
