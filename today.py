@@ -56,6 +56,7 @@ def gettoday(db):
     books = col.find()
     if run:
         return books
+        
     for book in books:
         print(f"[*] Getting results for {book['title']}")
         stats = scrape(book['url'])

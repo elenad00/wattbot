@@ -6,15 +6,15 @@ from plotter import plot
 
 def getyesterday(books, db):
     print("[*] Comparing todays data")
-    data = getdata(2, books, db)
+    getdata(2, books, db)
 
 def getthisweek(books, db):
     print("[*] Retrieving this weeks data")
-    data = getdata(7, books, db)
+    getdata(7, books, db)
 
 def getthismonth(books, db):
     print("[*] Retrieving this months data")
-    data = getdata(28, books, db)
+    getdata(28, books, db)
 
 def getdata(x, books, db):
     days = []
@@ -26,7 +26,7 @@ def getdata(x, books, db):
         bookid = book['id']
         for day in days:
             res.append(getvals(day, bookid, db))
-        compdata = [res[0][0], res[0][1]-res[-1][1], res[0][2]-res[-1][2], res[0][3]-res[-1][3], res[0][4]-res[-1][4], res[0][5]-res[-1][5], round(res[0][6]-res[-1][6],1)]
+        compdata = [res[0][0], res[0][1]-res[-1][1], res[0][2]-res[-1][2], res[0][3]-res[-1][3], round(res[0][4]-res[-1][4], 1), res[0][5]-res[-1][5], round(res[0][6]-res[-1][6],1)]
         compare(compdata)
         reads,likes,chapters,alpc,rpc,isc = [], [],[],[],[],[]
         for i in range(0,x):
