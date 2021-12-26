@@ -1,0 +1,6 @@
+Flask
+pymongo
+datetime
+matplotlib
+numpy
+bs4

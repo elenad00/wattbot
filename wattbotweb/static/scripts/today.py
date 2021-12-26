@@ -1,36 +1,41 @@
-import requests
-from requests.structures import CaseInsensitiveDict
-import urllib.request
 import time
-from sys import argv
-from bs4 import BeautifulSoup
 from datetime import date
-from pymongo import MongoClient
-from static.scripts.summaries import *
-from static.scripts.utils import *
+from bs4 import BeautifulSoup as bs
+from utils import connect
+import re
+
+def gettoday(db):
+    today = getdate()
+    runtoday = db["instances"].find({'date':today})
+    books = db["Books"].find()
+    try:
+        if runtoday[0]:
+            print("[!] Process already run today")
+            return books
+    except Exception:
+        for book in books:
+            stats = scrape(book['url'])
+            appenddb(book['id'], stats, db)
+
+def getdate():
+    return date.today().strftime("%d%m%Y")
 
 def scrape(url):
-  resp = connect(url)
-  soup = BeautifulSoup(resp.text, 'html.parser')
-  print("[*] Scrape Complete")
+  soup = bs(connect(url).text, 'html.parser')
   mydivs = list(soup.find_all("span", {"class": "sr-only"}))
-  reads = getstrip(mydivs[2])
-  likes = getstrip(mydivs[4])
-  chapters = getstrip(mydivs[6])
-  print(f'[+] Current values:\n\tReads: {reads}\n\tLikes: {likes}\n\tChapters: {chapters}')
+  vals = []
+  for div in mydivs:
+      val = re.findall('[A-Za-z ]{6}([0-9,]+)', str(div))
+      if len(val) > 0 and int(val[0].replace(',','')) not in vals and val[0] != ',':
+          val = int(val[0].replace(',',''))
+          vals.append(val)
+  reads = vals[0]
+  likes = vals[1]
+  chapters = vals[2]
   lpc = round(likes/chapters, 1)
-  print(f'\tAverage Likes Per Chapter: {lpc}')
   rat = round(reads/likes)
-  print(f"\tReads per Like: {rat}")
   interaction = round(likes/reads/chapters*10000, 1)
-  print(f"\tInteraction Score: {interaction}\n")
-  today = date.today()
-  today = today.strftime("%d%m%Y")
-  return (today, reads, likes, chapters, lpc, rat, interaction)
-
-def getstrip(spanval):
-    strippedval = int(str(spanval).replace('<span class="sr-only">', '').replace(',','').replace('</span>',''))
-    return strippedval
+  return (getdate(), reads, likes, chapters, lpc, rat, interaction)
 
 def appenddb(bookid, stats, db):
   instance = {'bookid':bookid,
@@ -43,22 +48,3 @@ def appenddb(bookid, stats, db):
     'interaction': stats[6]
   }
   res = db.instances.insert_one(instance)
-
-def gettoday(db):
-    run = False
-    col = db["instances"]
-    today = date.today().strftime("%d%m%Y")
-    books = col.find({'date':today})
-    for book in books:
-        if book['date'] == today:
-            run = True
-    col = db["Books"]
-    books = col.find()
-    if run:
-        return books
-
-    for book in books:
-        print(f"[*] Getting results for {book['title']}")
-        stats = scrape(book['url'])
-        appenddb(book['id'], stats, db)
-    return books

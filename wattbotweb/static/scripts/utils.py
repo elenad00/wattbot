@@ -1,10 +1,6 @@
 import requests
 from requests.structures import CaseInsensitiveDict
-import urllib.request
-import time
 from pymongo import MongoClient
-from sys import argv
-from bs4 import BeautifulSoup
 
 def connect(url):
   headers = CaseInsensitiveDict()
@@ -16,17 +12,10 @@ def connect(url):
   headers["Accept-Language"] = "en-gb"
   headers["Accept-Encoding"] = "gzip, deflate, br"
   headers["Connection"] = "keep-alive"
-
   resp = requests.get(url, headers=headers)
-
-  if resp.status_code == 200:
-    print('[*] Connected to Wattpad')
-  else:
-    print("[!] Could not connect to Wattpad")
-    exit(1)
   return resp
 
-def databaseconnect(password):
-    client = MongoClient(f"mongodb+srv://admin:{password}@wattbot.mcfnd.mongodb.net/Stats?retryWrites=true&w=majority")
+def databaseconnect():
+    client = MongoClient(f"mongodb+srv://admin:uWd3Cy9ynp75CBNr@wattbot.mcfnd.mongodb.net/Stats?retryWrites=true&w=majority")
     db = client.Wattbot
     return db

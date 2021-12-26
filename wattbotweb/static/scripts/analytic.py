@@ -1,14 +1,14 @@
 from sys import argv
-from static.scripts.addbook import addbook
-from static.scripts.today import gettoday
-from static.scripts.summaries import *
-from static.scripts.utils import databaseconnect
+from addbook import checkbooks
+from today import gettoday
+from summaries import *
+from utils import databaseconnect
 # wattbot checks your profile to see if you have any new books, or have deleted any
 # if you have new books, wattbot will add them to the database
 
 def runanalytic(username):
-    db = databaseconnect(password)
-    addbook(username, db)
+    db = databaseconnect()
+    checkbooks(username, db)
     # then, wattbot will scrape today's data from all of the books you have published
     # this data is then returned to you and saved to the database
     books = gettoday(db)
@@ -18,3 +18,5 @@ def runanalytic(username):
     getthisweek(books, db)
     # every month, wattbot will give you your monthly stats
     getthismonth(books, db)
+
+runanalytic(argv[1])
