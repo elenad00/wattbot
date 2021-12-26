@@ -25,7 +25,7 @@ def connect(url):
     print("[!] Could not connect to Wattpad")
     exit(1)
   return resp
-  
+
 def databaseconnect(password):
     client = MongoClient(f"mongodb+srv://admin:{password}@wattbot.mcfnd.mongodb.net/Stats?retryWrites=true&w=majority")
     db = client.Wattbot

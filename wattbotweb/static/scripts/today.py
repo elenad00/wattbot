@@ -6,8 +6,8 @@ from sys import argv
 from bs4 import BeautifulSoup
 from datetime import date
 from pymongo import MongoClient
-from summaries import *
-from utils import *
+from static.scripts.summaries import *
+from static.scripts.utils import *
 
 def scrape(url):
   resp = connect(url)
@@ -56,7 +56,7 @@ def gettoday(db):
     books = col.find()
     if run:
         return books
-        
+
     for book in books:
         print(f"[*] Getting results for {book['title']}")
         stats = scrape(book['url'])

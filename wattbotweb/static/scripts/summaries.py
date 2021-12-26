@@ -1,8 +1,7 @@
-
 from pymongo import MongoClient
 from datetime import date, timedelta
 from sys import argv
-from plotter import plot
+from static.scripts.plotter import plot
 
 def getyesterday(books, db):
     print("[*] Comparing todays data")
