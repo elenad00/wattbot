@@ -15,7 +15,7 @@ def connect(url):
   resp = requests.get(url, headers=headers)
   return resp
 
-def databaseconnect():
-    client = MongoClient(f"mongodb+srv://admin:uWd3Cy9ynp75CBNr@wattbot.mcfnd.mongodb.net/Stats?retryWrites=true&w=majority")
+def databaseconnect(password):
+    client = MongoClient(f"mongodb+srv://admin:{{password}}@wattbot.mcfnd.mongodb.net/Stats?retryWrites=true&w=majority")
     db = client.Wattbot
     return db
