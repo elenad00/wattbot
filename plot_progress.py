@@ -1,4 +1,5 @@
 
+import datetime
 from utils import CONN
 import matplotlib.pyplot as plotter
 def main():
@@ -6,8 +7,10 @@ def main():
         reads_dict = {}
         likes_dict = {}
         instances = CONN['instances'].find({'bookid':id}, {'reads':1, 'date':1,'likes':1})
+        instances = instances.sort('reads', 1)
         for instance in instances: 
             date = instance['date']
+            date = datetime.date(day=int(date[0:2]),month=int(date[2:4]),year=int(date[4:]))
             reads_dict[date] = instance['reads'] 
             likes_dict[date] = instance['likes'] 
 
