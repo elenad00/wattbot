@@ -83,7 +83,7 @@ def get_stats(url):
     return book
 
 def add_instance(book):
-    return CONN['Instances'].insert_one(book.get_stats())
+    return CONN['instances'].insert_one(book.get_stats())
 
 def get_yesterday(book):
     today=date.today().strftime('%d%m%Y')

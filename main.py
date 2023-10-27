@@ -21,7 +21,7 @@ def main():
     for book in book_urls:
         # get today's stats for each book
         book_class = get_stats(book)
-        # add_today = add_instance(book_class)
+        add_today = add_instance(book_class)
         book_class.print_today()
         # compare to yesterday
         yesterday_class = get_yesterday(book_class)
