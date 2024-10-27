@@ -1,4 +1,4 @@
-# Wattbot 2: Electric Boogaloo
+# Wattbot
 ## Welcome to Wattbot
 Welcome to Wattbot, your friendly Wattpad robot that assesses your progress in the grand Wattpad world! 
 Created by Elena D in 2023.
