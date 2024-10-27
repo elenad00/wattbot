@@ -7,7 +7,7 @@ How to run:
 python3 main.py -u <wattpad_username> -t <target reads>
 '''
 # imports
-from utils import *
+from wattbot_2.wattbot_utilities import *
 
 ARGS = get_args()
 

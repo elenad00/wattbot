@@ -1,6 +1,6 @@
 
 import datetime
-from utils import CONN
+from wattbot_2.wattbot_utilities import CONN
 import matplotlib.pyplot as plotter
 def main():
     for id in [book['id'] for book in CONN['Books'].find()]:
