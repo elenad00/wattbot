@@ -13,19 +13,19 @@ from typing import Any
 class Book_Instance:
     def __init__(
         self, 
-        title: Tag, 
+        title: str, 
         id: int,
         date: str,
-        reads: Tag,
-        likes: Tag,
-        chapters: Tag
+        reads: str,
+        likes: str,
+        chapters: str
     ):
         self.id = id
-        self.title = self.get_strip(title)
+        self.title = self.get_strs(title)
         self.date = date
-        self.reads = self.get_strip(reads)
-        self.likes = self.get_strip(likes)
-        self.chapters = self.get_strip(chapters)
+        self.reads = self.get_ints(reads)
+        self.likes = self.get_ints(likes)
+        self.chapters = self.get_ints(chapters)
         
         self.avglpc = round(self.likes/self.chapters, 1)
         self.avgrpl = round(self.reads/self.likes, 2) 
@@ -47,20 +47,19 @@ class Book_Instance:
         }
         return instance
     
-    def get_strip(self, spanval: Tag) -> int | str:
-        span_val = str(spanval)
-        regex_match = re.findall(
-            "<span class=\"sr-only\">([\w\s\d\,\[\]\.]+)</span>",
-            span_val
-        )
-        try:
-            val = regex_match[0].replace(',','')
-        except IndexError:
-            val = span_val
-        try: 
-            return int(val)
-        except ValueError: 
-            return val
+    def get_strs(self, span_val: str) -> str:
+        str_val = self._strip_spans(span_val)
+        return str(str_val)
+    
+    def get_ints(self, span_val: str) -> int:
+        regex_match = self._strip_spans(span_val)
+        int_val = regex_match.replace(',','')
+        return int(int_val)
+
+    def _strip_spans(self, span_val: str) -> str:
+        span_regex = "<span class=\"sr-only\">([\w\s\d\,\[\]\.]+)</span>" # type: ignore
+        regex_match = re.findall(span_regex, str(span_val))
+        return regex_match[0]
     
     def print_today(self):
         print(self.title)
@@ -80,7 +79,7 @@ class Compare:
         self.rpl = self.calculate(today.avgrpl, yesterday.avgrpl)
         self.int = self.calculate(today.interaction, yesterday.interaction)
     
-    def calculate(self, today_value: int, yesterday_value: int) -> str:
+    def calculate(self, today_value: int | float, yesterday_value: int | float) -> str:
         minus = today_value-yesterday_value
         if minus == 0:
             return '0'
@@ -113,7 +112,7 @@ def get_args() -> Namespace:
         help='The username of the profile to scan'
     )
     args.add_argument(
-        '-t', '--target', type=str, default=150000,
+        '-t', '--target', type=str, default=50000,
         help='The target reads for your books'
     )
     arguments = args.parse_args()
@@ -187,7 +186,7 @@ def get_yesterday(book: Book_Instance) -> Book_Instance:
     previous_days = database_connect()['instances'].find({'bookid':book.id},{'_id':0})
     yesterday = [day for day in previous_days.sort('reads',-1) if day['date']!=today][0]
     yesterday_class = Book_Instance(
-        title=book.title,
+        title=str(book.title),
         id=book.id,
         date=yesterday['date'],
         reads=yesterday['reads'],
