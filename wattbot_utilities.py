@@ -53,13 +53,22 @@ class Book_Instance:
     
     def get_ints(self, span_val: str) -> int:
         regex_match = self._strip_spans(span_val)
-        int_val = regex_match.replace(',','')
-        return int(int_val)
+        if type(regex_match) is str:
+            val = regex_match.split()
+            span_val = val[-1].replace(',','')
+        try:
+            return int(span_val)
+        except Exception as e:
+            print(f"{e} ERR: {span_val}")
+            return span_val
 
     def _strip_spans(self, span_val: str) -> str:
-        span_regex = "<span class=\"sr-only\">([\w\s\d\,\[\]\.]+)</span>" # type: ignore
-        regex_match = re.findall(span_regex, str(span_val))
-        return regex_match[0]
+        span_regex = "<span class=\"sr-only\">(.*)</span>" # type: ignore
+        try: 
+            regex_match = re.findall(span_regex, str(span_val))
+            return regex_match[0]
+        except IndexError:
+            return span_val
     
     def print_today(self):
         print(self.title)
