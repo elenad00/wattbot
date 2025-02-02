@@ -1,7 +1,7 @@
 
 import datetime
 from typing import Dict
-from wattbot_utilities import database_connect
+from bot_utils import database_connect
 import matplotlib.pyplot as plotter
 
 def main() -> None:

@@ -4,7 +4,8 @@ import s
 # module imports
 from argparse import ArgumentParser, Namespace
 from datetime import date, datetime
-from bs4 import BeautifulSoup as soup, Tag
+from requests.structures import CaseInsensitiveDict
+from bs4 import BeautifulSoup as soup
 from pymongo import MongoClient
 import re
 import requests
@@ -127,17 +128,26 @@ def get_args() -> Namespace:
     arguments = args.parse_args()
     return arguments
 
-def scrape(url: str) -> soup:
-    response = requests.get(url, headers=s.wattpad_header())
+def scrape(url: str, header: CaseInsensitiveDict) -> soup:
+    response = requests.get(url, headers = header)
     formatted = soup(response.text, 'html.parser')
     return formatted
 
-def profile_scrape(profile_url: str) -> list[str]:
+def profile_scrape(username: str, provider: str) -> list[str]:
     urls = list()
-    stories = list(scrape(profile_url).find_all('a',{'class':"send-cover-event"}))
-    for story in stories:
-        url = re.findall('href="(.*)"', str(story))[0]
-        urls.append(f'https://www.wattpad.com{url}')
+    if provider == "Wattpad":
+        profile_url = f'https://www.wattpad.com/user/{username}'
+        stories = list(scrape(profile_url, s.wattpad_header()).find_all('a',{'class':"send-cover-event"}))
+        for story in stories:
+            url = re.findall('href="(.*)"', str(story))[0]
+            urls.append(f'https://www.wattpad.com{url}')
+    
+    elif provider == "ao3":
+        profile_url = f'https://www.archiveofourown.org/users/{username}'
+        stories = list(scrape(profile_url, s.ao3_header()).find_all('a',{'class':"send-cover-event"}))
+        for story in stories:
+            url = re.findall('href="(.*)"', str(story))[0]
+            urls.append(f'https://www.archiveofourown.org{url}')
     return urls
 
 def database_connect() -> Any:
